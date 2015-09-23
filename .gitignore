@@ -1,0 +1,16 @@
+# 忽略bin文件和bin目录
+bin
+
+# 忽略gen文件和gen目录
+gen
+
+# 忽略classes文件和classes目录
+classes
+
+# 忽略.idea文件和.idea目录
+.idea
+.iml
+.log
+jellyrefresh.iml
+# 忽略 build/ 目录下的所有文件
+build/
