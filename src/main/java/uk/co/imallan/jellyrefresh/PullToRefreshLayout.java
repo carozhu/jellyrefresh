@@ -1,5 +1,6 @@
 package uk.co.imallan.jellyrefresh;
 
+import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
@@ -23,6 +24,7 @@ class PullToRefreshLayout extends FrameLayout {
 
     private float mTouchStartY;
 
+    private PullToRefreshLayout view;
     private float mCurrentY;
 
     private View mChildView;
@@ -44,16 +46,19 @@ class PullToRefreshLayout extends FrameLayout {
     public PullToRefreshLayout(Context context) {
         super(context);
         init();
+        view=this;
     }
 
     public PullToRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
+        view=this;
     }
 
     public PullToRefreshLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+        view=this;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -129,16 +134,46 @@ class PullToRefreshLayout extends FrameLayout {
             return;
         }
         mChildView.animate().setInterpolator(new DecelerateInterpolator());
+//        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
+//            mChildView.animate().setUpdateListener(animation -> {
+//                        int height = (int) mChildView.getTranslationY();
+//                        mHeader.getLayoutParams().height = height;
+//                        mHeader.requestLayout();
+//                        if (mPullToRefreshPullingListener != null) {
+//                            mPullToRefreshPullingListener.onReleasing(this, height / mHeaderHeight);
+//                        }
+//                    }
+//            );
+//        }else
+        {
+            mChildView.animate().setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
 
-        mChildView.animate().setUpdateListener(animation -> {
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
                     int height = (int) mChildView.getTranslationY();
                     mHeader.getLayoutParams().height = height;
                     mHeader.requestLayout();
                     if (mPullToRefreshPullingListener != null) {
-                        mPullToRefreshPullingListener.onReleasing(this, height / mHeaderHeight);
+                        mPullToRefreshPullingListener.onReleasing(view, height / mHeaderHeight);
                     }
                 }
-        );
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+        }
+
     }
 
     private void addViewInternal(@NonNull View child) {
@@ -173,11 +208,6 @@ class PullToRefreshLayout extends FrameLayout {
         }
     }
 
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev){
-//        return false;
-//    }
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
         if (isRefreshing) {
@@ -196,7 +226,6 @@ class PullToRefreshLayout extends FrameLayout {
                 }
                 break;
         }
-       // return true;//interceptTouchEvent 返回 true ，也就是拦截掉了 则交给它的 onTouchEvent 来处理
         return super.onInterceptTouchEvent(e);
     }
 

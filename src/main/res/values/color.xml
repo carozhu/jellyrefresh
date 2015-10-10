@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="transparent">#7f000000</color>
+    <color name="transparent_background">#9000</color>
+    <color name="transparent_gold">#6000</color>
+    <color name="mall_middle_line">#f4f5ed</color>
+</resources>
