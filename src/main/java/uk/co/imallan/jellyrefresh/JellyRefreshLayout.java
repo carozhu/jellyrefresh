@@ -2,7 +2,6 @@ package uk.co.imallan.jellyrefresh;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -100,16 +99,16 @@ public class JellyRefreshLayout extends PullToRefreshLayout {
                         }
                         jellyView.setMinimumHeight((int) (headerHeight));
                         ValueAnimator animator = ValueAnimator.ofInt(jellyView.getJellyHeight(), 0);
-//                        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
-//                            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//                                @Override
-//                                public void onAnimationUpdate(ValueAnimator animation) {
-//                                    jellyView.setJellyHeight((int) animation.getAnimatedValue());
-//                                    jellyView.invalidate();
-//                                }
-//                            });
-//                        }
-//                        else
+                        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
+                            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animation) {
+                                    jellyView.setJellyHeight((int) animation.getAnimatedValue());
+                                    jellyView.invalidate();
+                                }
+                            });
+                        }
+                        else
                         {
                             animator.addListener(new Animator.AnimatorListener() {
                                 @Override
@@ -174,7 +173,7 @@ public class JellyRefreshLayout extends PullToRefreshLayout {
             @Override
             public void onReleasing(PullToRefreshLayout pullToRefreshLayout, float fraction) {
                 if (!pullToRefreshLayout.isRefreshing()) {
-                    textLoading.setVisibility(View.GONE);
+                    textLoading.setVisibility(View.VISIBLE);
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN){
                         mJellyRefreshLayout.setBackgroundDrawable(getContext().getResources().getDrawable(R.drawable.translate_backgroud));
                     }else {

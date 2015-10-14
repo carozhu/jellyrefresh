@@ -134,17 +134,17 @@ class PullToRefreshLayout extends FrameLayout {
             return;
         }
         mChildView.animate().setInterpolator(new DecelerateInterpolator());
-//        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
-//            mChildView.animate().setUpdateListener(animation -> {
-//                        int height = (int) mChildView.getTranslationY();
-//                        mHeader.getLayoutParams().height = height;
-//                        mHeader.requestLayout();
-//                        if (mPullToRefreshPullingListener != null) {
-//                            mPullToRefreshPullingListener.onReleasing(this, height / mHeaderHeight);
-//                        }
-//                    }
-//            );
-//        }else
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
+            mChildView.animate().setUpdateListener(animation -> {
+                        int height = (int) mChildView.getTranslationY();
+                        mHeader.getLayoutParams().height = height;
+                        mHeader.requestLayout();
+                        if (mPullToRefreshPullingListener != null) {
+                            mPullToRefreshPullingListener.onReleasing(this, height / mHeaderHeight);
+                        }
+                    }
+            );
+        }else
         {
             mChildView.animate().setListener(new Animator.AnimatorListener() {
                 @Override
