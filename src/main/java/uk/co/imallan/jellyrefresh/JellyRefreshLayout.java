@@ -145,9 +145,14 @@ public class JellyRefreshLayout extends PullToRefreshLayout {
                                     public void run() {
                                         textLoading.setVisibility(View.VISIBLE);
                                         //textLoading加载动画
-                                        textLoading.setImageResource(R.drawable.loading);
-                                        mAnimationDrawable = (AnimationDrawable) textLoading.getDrawable();
-                                        mAnimationDrawable.start();
+                                        try {
+                                            textLoading.setImageResource(R.drawable.loading);
+                                            mAnimationDrawable = (AnimationDrawable) textLoading.getDrawable();
+                                            mAnimationDrawable.start();
+                                        }catch (OutOfMemoryError OME){
+                                            OME.printStackTrace();
+                                        }
+
                                     }
                                 }, 120
                         );

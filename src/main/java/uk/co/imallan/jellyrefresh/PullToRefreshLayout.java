@@ -229,6 +229,14 @@ class PullToRefreshLayout extends FrameLayout {
         return super.onInterceptTouchEvent(e);
     }
 
+    public void autoRefesh(){
+        mHeader.getLayoutParams().height = (int) 70;
+        mHeader.requestLayout();
+        if (mPullToRefreshPullingListener != null) {
+            mPullToRefreshPullingListener.onPulling(this, 80 / mHeaderHeight);
+        }
+    }
+
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent e) {
         if (isRefreshing) {
