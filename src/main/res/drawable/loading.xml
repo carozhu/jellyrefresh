@@ -3,30 +3,30 @@
     android:oneshot="false" >  
   
     <item  
-        android:drawable="@drawable/clock_01"
+        android:drawable="@drawable/clock_1"
         android:duration="150"/>  
     <item  
-        android:drawable="@drawable/clock_02"
+        android:drawable="@drawable/clock_2"
         android:duration="150"/>
 
     <item
-        android:drawable="@drawable/clock_03"
+        android:drawable="@drawable/clock_3"
         android:duration="150"/>
 
     <item
-        android:drawable="@drawable/clock_04"
+        android:drawable="@drawable/clock_4"
         android:duration="150"/>
 
     <item
-        android:drawable="@drawable/clock_05"
+        android:drawable="@drawable/clock_5"
         android:duration="150"/>
 
     <item
-        android:drawable="@drawable/clock_06"
+        android:drawable="@drawable/clock_6"
         android:duration="150"/>
 
     <item
-        android:drawable="@drawable/clock_07"
+        android:drawable="@drawable/clock_7"
         android:duration="150"/>
 
 </animation-list>  

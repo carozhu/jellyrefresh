@@ -19,7 +19,7 @@
         android:gravity="center"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:src="@drawable/clock_01"
+        android:src="@drawable/clock_1"
         android:textColor="@android:color/white"
         tools:ignore="HardcodedText" />
 
