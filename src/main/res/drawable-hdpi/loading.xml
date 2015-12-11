@@ -28,24 +28,6 @@
         android:drawable="@drawable/clock_07"
         android:duration="150"/>
 
-    <item
-        android:drawable="@drawable/clock_08"
-        android:duration="150"/>
 
-    <item
-        android:drawable="@drawable/clock_09"
-        android:duration="150"/>
-
-    <item
-        android:drawable="@drawable/clock_10"
-        android:duration="150"/>
-
-    <item
-        android:drawable="@drawable/clock_11"
-        android:duration="150"/>
-
-    <item
-        android:drawable="@drawable/clock_12"
-        android:duration="150"/>
 
 </animation-list>  
