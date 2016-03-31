@@ -1,2 +1,3 @@
 # jellyrefresh
-jellyrefresh pull refresh.folk from jellyrefresh
+forked from allan1st/JellyRefreshLayout
+
