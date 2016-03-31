@@ -7,10 +7,12 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
@@ -45,18 +47,24 @@ class PullToRefreshLayout extends FrameLayout {
 
     public PullToRefreshLayout(Context context) {
         super(context);
+        // 触发移动事件的最短距离，如果小于这个距离就不触发移动控件
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         init();
         view=this;
     }
 
     public PullToRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        // 触发移动事件的最短距离，如果小于这个距离就不触发移动控件
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         init();
         view=this;
     }
 
     public PullToRefreshLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        // 触发移动事件的最短距离，如果小于这个距离就不触发移动控件
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         init();
         view=this;
     }
@@ -64,6 +72,8 @@ class PullToRefreshLayout extends FrameLayout {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public PullToRefreshLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        // 触发移动事件的最短距离，如果小于这个距离就不触发移动控件
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         init();
     }
 
@@ -208,6 +218,10 @@ class PullToRefreshLayout extends FrameLayout {
         }
     }
 
+    private int mTouchSlop;
+    // 上一次触摸时的X坐标
+    private float mPrevX;
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
         if (isRefreshing) {
@@ -217,12 +231,38 @@ class PullToRefreshLayout extends FrameLayout {
             case MotionEvent.ACTION_DOWN:
                 mTouchStartY = e.getY();
                 mCurrentY = mTouchStartY;
+                mPrevX = e.getX();
                 break;
             case MotionEvent.ACTION_MOVE:
                 float currentY = e.getY();
                 float dy = currentY - mTouchStartY;
-                if (dy > 0 && !canChildScrollUp()) {
-                    return true;
+
+
+                final float eventX = e.getX();
+                float xDiff = Math.abs(eventX - mPrevX);
+                // Log.d("refresh" ,"move----" + eventX + "   " + mPrevX + "   " + mTouchSlop);
+//                // debug 增加30的容差，让下拉刷新在竖直滑动时就可以触发
+//                if (xDiff > mTouchSlop + 30) {
+//                    Log.i("pullrefreshoncaro","into xDiff > mTouchSlop + 60");
+//                    if (dy > 0 && !canChildScrollUp()) {
+//                        Log.i("pullrefreshoncaro","return true dy > 0 && !canChildScrollUp()");
+//                        return true;
+//                    }else{
+//                        Log.i("pullrefreshoncaro"," return false");
+//                        return false;
+//                    }
+//                }
+
+                // debug 增加5的容差，让下拉刷新在竖直滑动时就可以触发
+                if (xDiff > mTouchSlop +5) {
+                    Log.i("pullrefreshoncaro","into xDiff > mTouchSlop + 60");
+                    if (dy > 0 && !canChildScrollUp()) {
+                        Log.i("pullrefreshoncaro","return true dy > 0 && !canChildScrollUp()");
+                        return true;
+                    }else{
+                        Log.i("pullrefreshoncaro"," return false");
+                        return false;
+                    }
                 }
                 break;
         }
@@ -236,6 +276,7 @@ class PullToRefreshLayout extends FrameLayout {
             mPullToRefreshPullingListener.onPulling(this, 80 / mHeaderHeight);
         }
     }
+
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent e) {
